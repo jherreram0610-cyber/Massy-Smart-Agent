@@ -1,0 +1,249 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum Channel {
+  web
+  whatsapp
+  facebook
+  instagram
+  mercadolibre
+}
+
+enum ConversationStatus {
+  active
+  closed
+  handed_off
+}
+
+enum MessageRole {
+  user
+  assistant
+}
+
+enum PaymentType {
+  cash
+  financing
+  unknown
+}
+
+enum Urgency {
+  this_week
+  this_month
+  three_months
+  exploring
+}
+
+enum Temperature {
+  hot
+  warm
+  cold
+}
+
+enum AppointmentStatus {
+  pending
+  confirmed
+  completed
+  cancelled
+  no_show
+}
+
+enum AdvisorRole {
+  advisor
+  manager
+  admin
+}
+
+enum NotificationType {
+  hot_lead
+  warm_lead
+  appointment_booked
+  appointment_reminder
+}
+
+model Conversation {
+  id        String             @id @default(cuid())
+  channel   Channel
+  channelId String
+  status    ConversationStatus @default(active)
+  advisorId String?
+  advisor   Advisor?           @relation(fields: [advisorId], references: [id])
+  lead      Lead?
+  messages  Message[]
+  createdAt DateTime           @default(now())
+  updatedAt DateTime           @updatedAt
+
+  @@unique([channel, channelId])
+  @@index([status])
+  @@index([advisorId])
+}
+
+model Message {
+  id             String       @id @default(cuid())
+  conversationId String
+  conversation   Conversation @relation(fields: [conversationId], references: [id])
+  role           MessageRole
+  content        String
+  metadata       Json?
+  createdAt      DateTime     @default(now())
+
+  @@index([conversationId, createdAt])
+}
+
+model Lead {
+  id              String         @id @default(cuid())
+  conversationId  String         @unique
+  conversation    Conversation   @relation(fields: [conversationId], references: [id])
+  name            String?
+  phone           String?
+  email           String?
+  vehicleInterest String?
+  paymentType     PaymentType?
+  hasTradeIn      Boolean?
+  tradeInBrand    String?
+  urgency         Urgency?
+  budget          String?
+  temperature     Temperature    @default(cold)
+  score           Int            @default(0)
+  aiSummary       String?
+  advisorId       String?
+  advisor         Advisor?       @relation(fields: [advisorId], references: [id])
+  crmSalesforceId String?
+  crmFreshsalesId String?
+  appointments    Appointment[]
+  notifications   Notification[]
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+
+  @@index([temperature])
+  @@index([score])
+  @@index([advisorId])
+  @@index([createdAt])
+}
+
+model Appointment {
+  id                 String            @id @default(cuid())
+  leadId             String
+  lead               Lead              @relation(fields: [leadId], references: [id])
+  advisorId          String
+  advisor            Advisor           @relation(fields: [advisorId], references: [id])
+  slotId             String            @unique
+  slot               AdvisorSlot       @relation(fields: [slotId], references: [id])
+  scheduledAt        DateTime
+  vehicleInterest    String?
+  status             AppointmentStatus @default(pending)
+  confirmationSentAt DateTime?
+  reminder1SentAt    DateTime?
+  reminder2SentAt    DateTime?
+  crmAppointmentId   String?
+  notes              String?
+  createdAt          DateTime          @default(now())
+  updatedAt          DateTime          @updatedAt
+
+  @@index([status])
+  @@index([advisorId])
+}
+
+model AdvisorSlot {
+  id          String       @id @default(cuid())
+  advisorId   String
+  advisor     Advisor      @relation(fields: [advisorId], references: [id])
+  startsAt    DateTime
+  endsAt      DateTime
+  isAvailable Boolean      @default(true)
+  sourceType  String
+  sourceId    String?
+  appointment Appointment?
+  createdAt   DateTime     @default(now())
+
+  @@index([advisorId, startsAt, isAvailable])
+}
+
+model Advisor {
+  id              String         @id @default(cuid())
+  name            String
+  email           String         @unique
+  passwordHash    String
+  phone           String?
+  role            AdvisorRole    @default(advisor)
+  isActive        Boolean        @default(true)
+  crmSalesforceId String?
+  crmFreshsalesId String?
+  conversations   Conversation[]
+  leads           Lead[]
+  slots           AdvisorSlot[]
+  appointments    Appointment[]
+  notifications   Notification[]
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+}
+
+model Notification {
+  id        String           @id @default(cuid())
+  advisorId String
+  advisor   Advisor          @relation(fields: [advisorId], references: [id])
+  leadId    String
+  lead      Lead             @relation(fields: [leadId], references: [id])
+  type      NotificationType
+  read      Boolean          @default(false)
+  payload   Json?
+  createdAt DateTime         @default(now())
+
+  @@index([advisorId, read])
+}
+
+model Vehicle {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  name        String
+  description String
+  priceFrom   Int
+  priceTo     Int?
+  features    Json
+  colors      Json
+  specs       Json
+  imageUrl    String?
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model FinancingPlan {
+  id             String   @id @default(cuid())
+  bankName       String
+  vehicleSlug    String?
+  minRate        Float
+  maxRate        Float
+  minTerm        Int
+  maxTerm        Int
+  minDownPayment Int
+  requirements   String
+  notes          String?
+  isActive       Boolean  @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model Promotion {
+  id          String    @id @default(cuid())
+  title       String
+  description String
+  vehicleSlug String?
+  validUntil  DateTime?
+  isActive    Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model DealershipInfo {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  value     String
+  updatedAt DateTime @updatedAt
+}

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Massy Motors Smart – Widget de Chat</title>
+</head>
+<body>
+  <h1>Ejemplo de integración del widget de chat</h1>
+  <p>Agrega el siguiente código antes del cierre del tag &lt;/body&gt; en tu sitio web:</p>
+
+  <pre><code>
+&lt;!-- Massy Motors Smart Chat Widget --&gt;
+&lt;script&gt;
+  window.massyWidgetConfig = {
+    apiUrl: "https://tu-dominio.com",
+    primaryColor: "#00D4FF",
+    title: "Massy Motors Smart",
+    subtitle: "Agente IA · En línea",
+    welcomeMessage: "¡Hola! ¿En qué puedo ayudarte hoy?"
+  };
+&lt;/script&gt;
+&lt;script src="https://tu-dominio.com/widget/widget.iife.js" defer&gt;&lt;/script&gt;
+  </code></pre>
+</body>
+</html>

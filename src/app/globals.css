@@ -1,0 +1,118 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* ─── Massy Motors Smart — Design System ──────────────────────────────────── */
+:root {
+  /* Panel dark theme (default) */
+  --bg: #050B20;
+  --surface: #0D1730;
+  --surface-2: #111E38;
+  --border: #1C2D50;
+  --primary: #00D4FF;
+  --primary-hover: #00B8E0;
+  --hot: #FF3B5C;
+  --warm: #FFD600;
+  --cold: #6B7FA3;
+  --success: #00E5A0;
+  --text: #E0E6ED;
+  --muted: #6B7FA3;
+  --white: #FFFFFF;
+
+  /* shadcn CSS variables — mapped to our dark theme */
+  --background: #050B20;
+  --foreground: #E0E6ED;
+  --card: #0D1730;
+  --card-foreground: #E0E6ED;
+  --popover: #0D1730;
+  --popover-foreground: #E0E6ED;
+  --primary-color: #00D4FF;
+  --primary-foreground: #050B20;
+  --secondary: #111E38;
+  --secondary-foreground: #E0E6ED;
+  --muted-color: #111E38;
+  --muted-foreground: #6B7FA3;
+  --accent: #111E38;
+  --accent-foreground: #E0E6ED;
+  --destructive: #FF3B5C;
+  --destructive-foreground: #FFFFFF;
+  --border-color: #1C2D50;
+  --input: #1C2D50;
+  --ring: #00D4FF;
+  --radius: 0.5rem;
+
+  /* Typography */
+  --font-heading: "Syne", sans-serif;
+  --font-body: "DM Sans", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+}
+
+/* ─── Base styles ────────────────────────────────────────────────────────── */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background-color: var(--bg);
+  color: var(--text);
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.65;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  color: var(--white);
+  line-height: 1.2;
+}
+
+/* ─── Scrollbar ──────────────────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--surface);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--cold);
+}
+
+/* ─── Temperature badge utilities ───────────────────────────────────────── */
+.badge-hot {
+  background: rgba(255, 59, 92, 0.12);
+  color: var(--hot);
+  border: 1px solid rgba(255, 59, 92, 0.25);
+}
+.badge-warm {
+  background: rgba(255, 214, 0, 0.10);
+  color: var(--warm);
+  border: 1px solid rgba(255, 214, 0, 0.25);
+}
+.badge-cold {
+  background: rgba(107, 127, 163, 0.10);
+  color: var(--cold);
+  border: 1px solid rgba(107, 127, 163, 0.25);
+}
+
+/* ─── Pulse animation for HOT lead indicator ─────────────────────────────── */
+@keyframes pulse-hot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(1.4); }
+}
+.pulse-dot {
+  animation: pulse-hot 2s infinite;
+}
