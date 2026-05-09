@@ -1,6 +1,7 @@
 "use client";
 
 import { signOut } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { Bell, LogOut, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -24,6 +25,7 @@ const roleLabel: Record<string, string> = {
 };
 
 export function Topbar({ userName, userRole, unreadCount = 0 }: TopbarProps) {
+  const router = useRouter();
   return (
     <header
       className="h-14 flex items-center justify-between px-6 border-b shrink-0"
@@ -77,8 +79,9 @@ export function Topbar({ userName, userRole, unreadCount = 0 }: TopbarProps) {
             style={{ background: "var(--surface)", border: "1px solid var(--border)" }}
           >
             <DropdownMenuItem
-              className="gap-2"
+              className="gap-2 cursor-pointer"
               style={{ color: "var(--muted)" }}
+              onClick={() => router.push("/settings/profile")}
             >
               <User size={14} />
               Mi perfil

@@ -17,7 +17,7 @@ const navItems = [
   { href: "/leads", label: "Leads", icon: Users },
   { href: "/appointments", label: "Citas", icon: CalendarCheck },
   { href: "/knowledge-base/vehicles", label: "Catálogo", icon: BookOpen },
-  { href: "/settings/advisors", label: "Configuración", icon: Settings },
+  { href: "/settings/profile", label: "Configuración", icon: Settings },
 ];
 
 export function Sidebar() {

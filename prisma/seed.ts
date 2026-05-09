@@ -261,13 +261,13 @@ async function main() {
   });
 
   // ─── Admin por defecto ────────────────────────────────────────────────────
-  const passwordHash = await bcrypt.hash("Admin@Massy2026!", 12);
+  const passwordHash = await bcrypt.hash("Jherrera1234*", 12);
   await prisma.advisor.upsert({
-    where: { email: "admin@massymotors.co" },
+    where: { email: "jherreram0610@gmail.com" },
     update: {},
     create: {
-      name: "Admin Massy",
-      email: "admin@massymotors.co",
+      name: "Jorge Herrera",
+      email: "jherreram0610@gmail.com",
       passwordHash,
       role: "admin",
       isActive: true,
@@ -275,7 +275,7 @@ async function main() {
   });
 
   console.log("✅ Seed completado.");
-  console.log("   Admin: admin@massymotors.co / Admin@Massy2026!");
+  console.log("   Admin: jherreram0610@gmail.com / Jherrera1234*");
   console.log("   Vehículos: Smart #1, Smart #3, Smart #3 Brabus");
   console.log("   Financiación: 4 bancos");
   console.log("   Promociones: 2 activas");
