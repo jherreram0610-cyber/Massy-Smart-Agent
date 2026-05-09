@@ -1,9 +1,9 @@
-import jsforce from "jsforce";
+import * as jsforce from "jsforce";
 import type { CRMAdapter, CRMLead, CRMAppointment, CRMAdvisorSlot } from "./adapter";
 
-let sfConn: jsforce.Connection | null = null;
+let sfConn: InstanceType<typeof jsforce.Connection> | null = null;
 
-async function getConnection(): Promise<jsforce.Connection> {
+async function getConnection(): Promise<InstanceType<typeof jsforce.Connection>> {
   if (sfConn) return sfConn;
 
   sfConn = new jsforce.Connection({
@@ -84,7 +84,7 @@ export const salesforceAdapter: CRMAdapter = {
        AND IsAllDayEvent = false`
     );
 
-    return result.records.map((r) => {
+    return result.records.map((r: { Id: string; OwnerId: string; ActivityDateTime: string; DurationInMinutes: number }) => {
       const start = new Date(r.ActivityDateTime);
       const end = new Date(start.getTime() + r.DurationInMinutes * 60000);
       return {

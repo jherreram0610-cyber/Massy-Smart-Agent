@@ -55,24 +55,22 @@ export function Topbar({ userName, userRole, unreadCount = 0 }: TopbarProps) {
 
         {/* User menu */}
         <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <button
-              className="flex items-center gap-2 rounded-lg px-3 py-1.5 transition-colors"
-              style={{ color: "var(--text)" }}
+          <DropdownMenuTrigger
+            className="flex items-center gap-2 rounded-lg px-3 py-1.5 transition-colors outline-none"
+            style={{ color: "var(--text)" }}
+          >
+            <div
+              className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold"
+              style={{ background: "var(--surface-2)", color: "var(--primary)" }}
             >
-              <div
-                className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold"
-                style={{ background: "var(--surface-2)", color: "var(--primary)" }}
-              >
-                {userName.charAt(0).toUpperCase()}
+              {userName.charAt(0).toUpperCase()}
+            </div>
+            <div className="hidden sm:block text-left">
+              <div className="text-sm font-medium leading-none">{userName}</div>
+              <div className="text-xs mt-0.5" style={{ color: "var(--muted)" }}>
+                {roleLabel[userRole] ?? userRole}
               </div>
-              <div className="hidden sm:block text-left">
-                <div className="text-sm font-medium leading-none">{userName}</div>
-                <div className="text-xs mt-0.5" style={{ color: "var(--muted)" }}>
-                  {roleLabel[userRole] ?? userRole}
-                </div>
-              </div>
-            </button>
+            </div>
           </DropdownMenuTrigger>
           <DropdownMenuContent
             align="end"
