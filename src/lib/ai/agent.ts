@@ -288,10 +288,10 @@ async function executeTool(
             type: "hot_lead" as const,
             leadId,
             payload: {
-              reason: input.reason,
-              urgency: input.urgency,
-              summary: input.summary,
-            },
+              reason: String(input.reason ?? ""),
+              urgency: String(input.urgency ?? ""),
+              summary: String(input.summary ?? ""),
+            } as Record<string, string>,
           })),
         });
       }
